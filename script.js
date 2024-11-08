@@ -10,11 +10,12 @@ const againBtn = document.getElementById('again');
 const highest = document.getElementById('highscore');
 
 let secretNumber = getRandomNum(1, 20);
-let guess = input.value;
+let guess = 0;
 let qtdScore = 20;
 let highScore = 0;
 
 submit.addEventListener('click', function () {
+  guess = input.value;
   // player does not enter a number
   if (guess === '') {
     message.textContent = 'Please, enter a number!';
