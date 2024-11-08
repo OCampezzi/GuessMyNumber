@@ -42,10 +42,11 @@ submit.addEventListener('click', function () {
   // If the guess is incorrect
   else {
     // if the player have tries left
-    if (score > 1) {
+    if (qtdScore > 1) {
       message.textContent =
         guess > secretNumber ? '📈 Too high!' : '📉 Too low!';
       qtdScore--; // Decrease the score
+      score.textContent = qtdScore;
     } else {
       message.textContent = '💥 You lost the game!';
       score.textContent = 0; // Set score to 0
@@ -54,8 +55,6 @@ submit.addEventListener('click', function () {
       body.classList.add('bg-red-600'); // Add loser background color
     }
   }
-
-  score.textContent = qtdScore;
 });
 
 // Resetting the game ('Again' button)
@@ -65,8 +64,10 @@ againBtn.addEventListener('click', function () {
   message.textContent = 'Start guessing...';
   againBtn.classList.add('hidden'); // Hide the 'Again' button
   body.classList.remove('bg-green-600'); // Remove winner background color
+  body.classList.remove('bg-red-600');
   body.classList.add('bg-gray-800'); // Add default background color
   secretNumber = getRandomNum(1, 20); // Generate a new secret number
+  number.textContent = '?'; // Hide the secret number
 });
 
 // Function to generate the secret number
