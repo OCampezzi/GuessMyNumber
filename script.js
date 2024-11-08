@@ -34,6 +34,8 @@ submit.addEventListener('click', function () {
       highScore = qtdScore;
       highest.textContent = highScore; // Update the displayed high score
     }
+
+    guess.disabled = true; // Disable the 'Check' button
   }
   // If player enters a guess outside the range
   else if (guess < 1 || guess > 20) {
@@ -68,6 +70,7 @@ againBtn.addEventListener('click', function () {
   body.classList.add('bg-gray-800'); // Add default background color
   secretNumber = getRandomNum(1, 20); // Generate a new secret number
   number.textContent = '?'; // Hide the secret number
+  guess.disabled = false; // Enable the 'Check' button
 });
 
 // Function to generate the secret number
