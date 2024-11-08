@@ -9,54 +9,67 @@ const message = document.getElementById('message');
 const againBtn = document.getElementById('again');
 const highest = document.getElementById('highscore');
 
-let secretNumber = getRandomNum(1, 20);
-let guess = 0;
-let qtdScore = 20;
-let highScore = 0;
+let secretNumber = getRandomNum(1, 20); // Generate the random secret number
+let qtdScore = 20; // Set the initial score to 20
+let highScore = 0; // Set the initial high score to 0
 
+// Checking the player's guess
 submit.addEventListener('click', function () {
-  guess = input.value;
-  // player does not enter a number
-  if (guess === '') {
+  const guess = input.value;
+
+  // If player doesn't enter a number
+  if (!guess) {
     message.textContent = 'Please, enter a number!';
-    // player enters a number higher than the secret number
-  } else if (guess > secretNumber && guess <= 20) {
-    message.textContent = 'Too high!';
-    qtdScore--;
-    // player enters a number lower than the secret number
-  } else if (guess < secretNumber && guess >= 1) {
-    message.textContent = 'Too low!';
-    qtdScore--;
-    // player guesses the secret number
-  } else if (guess == secretNumber) {
+  }
+  // If the player wins
+  else if (guess == secretNumber) {
     message.textContent = '🎉 Congratulations, you guessed it right!';
-    againBtn.classList.remove('hidden');
-    body.classList.remove('bg-gray-800');
-    body.classList.add('bg-green-600');
-    number.textContent = secretNumber;
+    againBtn.classList.remove('hidden'); // Show the 'Again' button
+    body.classList.remove('bg-gray-800'); // Remove default background color
+    body.classList.add('bg-green-600'); // Add success background color
+    number.textContent = secretNumber; // Display the secret number
+
+    // Update the highscore if the current score is greater than the highscore
     if (highScore < qtdScore) {
       highScore = qtdScore;
-      highest.textContent = highScore;
+      highest.textContent = highScore; // Update the displayed high score
     }
-    // player enters an invalid number
-  } else {
+  }
+  // If player enters a guess outside the range
+  else if (guess < 1 || guess > 20) {
     message.textContent = 'Please, enter a number between 1 and 20!';
+  }
+  // If the guess is incorrect
+  else {
+    // if the player have tries left
+    if (score > 1) {
+      message.textContent =
+        guess > secretNumber ? '📈 Too high!' : '📉 Too low!';
+      qtdScore--; // Decrease the score
+    } else {
+      message.textContent = '💥 You lost the game!';
+      score.textContent = 0; // Set score to 0
+      againBtn.classList.remove('hidden'); // Show the 'Again' button
+      body.classList.remove('bg-gray-800'); // Remove default background color
+      body.classList.add('bg-red-600'); // Add loser background color
+    }
   }
 
   score.textContent = qtdScore;
 });
 
-// reset button
+// Resetting the game ('Again' button)
 againBtn.addEventListener('click', function () {
-  qtdScore = 20;
+  qtdScore = 20; // Reset the score to 20
   score.textContent = qtdScore;
   message.textContent = 'Start guessing...';
-  againBtn.classList.add('hidden');
-  body.classList.remove('bg-green-600');
-  body.classList.add('bg-gray-800');
+  againBtn.classList.add('hidden'); // Hide the 'Again' button
+  body.classList.remove('bg-green-600'); // Remove winner background color
+  body.classList.add('bg-gray-800'); // Add default background color
+  secretNumber = getRandomNum(1, 20); // Generate a new secret number
 });
 
-// function to generate the secret number
+// Function to generate the secret number
 function getRandomNum(min, max) {
   const minCeiled = Math.ceil(min);
   const maxFloored = Math.floor(max);
